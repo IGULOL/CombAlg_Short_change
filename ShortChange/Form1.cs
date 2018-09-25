@@ -20,6 +20,8 @@ namespace ShortChange
      */
     public partial class MainForm : Form
     {
+        int[] coinsSeller; //монеты продавца
+        int[] coinsBuyers; //монеты покупателя
 
 
         public MainForm()
@@ -27,12 +29,13 @@ namespace ShortChange
             InitializeComponent();
         }
 
+        //доступность компонентов
         private void EnabledComponents(bool value)
         {
             btnFix.Enabled = value;
             textBoxCoinsBuyers.ReadOnly = !value;
             textBoxCoinsSeller.ReadOnly = !value;
-            textBoxSumShortChange.Enabled = !value;
+            textBoxPurchasePrice.Enabled = !value;
             btnGiveShortChange.Enabled = false;
         }
 
@@ -50,11 +53,24 @@ namespace ShortChange
             //изменяем доступность компонентов
             EnabledComponents(false);
 
-            //считываем информацию из полей
-            String[] coins_seller = textBoxCoinsSeller.Text.Split(new String[] { " " }, StringSplitOptions.None);
-            String[] coins_buyers = textBoxCoinsBuyers.Text.Split(new String[] { " " }, StringSplitOptions.None);
+            try
+            {
+                //считываем информацию из полей
+                coinsSeller = textBoxCoinsSeller.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
+                Select(x => int.Parse(x)).ToArray();
+                coinsBuyers = textBoxCoinsBuyers.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
+                Select(x => int.Parse(x)).ToArray();
 
-
+                //сортируем по возрастанию
+                Array.Sort(coinsSeller);
+                Array.Sort(coinsBuyers);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ошибка при вводе чисел.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //изменяем доступность компонентов
+                EnabledComponents(true);
+            }
         }
 
         //очистить
@@ -63,8 +79,8 @@ namespace ShortChange
             //очищаем поля
             textBoxCoinsBuyers.Clear();
             textBoxCoinsSeller.Clear();
-            textBoxSumShortChange.Clear();
-
+            textBoxPurchasePrice.Clear();
+            textBoxShortChange.Clear();
 
             //изменяем доступность компонентов
             EnabledComponents(true);
@@ -74,6 +90,80 @@ namespace ShortChange
         private void textBoxSumShortChange_TextChanged(object sender, EventArgs e)
         {
             btnGiveShortChange.Enabled = true;
+        }
+
+        /*
+         * 
+         */
+        private int GiveChange(int[] masValue, int change, int[] minCoins, int[] coinsUsed)
+        {
+            //рассматриваем все возможные сочетания монет, дающие сумму rubles
+            for (int rubles = 0; rubles <= change; rubles++)
+            {
+                int coinCount = rubles; //количество монет
+                int newCoin = 1;
+                foreach (int i in masValue)
+                {
+                    if (i <= rubles)
+                    {
+                        if (minCoins[rubles - i] + 1 < coinCount)
+                        {
+                            coinCount = minCoins[rubles - i] + 1;
+                            newCoin = i;
+                        }
+                    }
+                }
+                minCoins[rubles] = coinCount;
+                coinsUsed[rubles] = newCoin;
+            }
+            //минимальное количество монет
+            return minCoins[change];        
+        }
+
+        private void PrintCoins(int[] coinsUsed, int change)
+        {
+            int coin = change;
+            while (coin > 0)
+            {
+                int thisCoin = coinsUsed[coin];
+                textBoxShortChange.Text += thisCoin + " ";
+                coin = coin - thisCoin;
+            }
+        }
+
+        private void btnGiveShortChange_Click(object sender, EventArgs e)
+        {
+            textBoxShortChange.Clear();
+
+            //получаем стоимость покупки
+            int purchasePrice = int.Parse(textBoxPurchasePrice.Text);
+
+            //список из минимальных количеств монет, необходимых для выдачи каждого значения
+            int[] coinCount = new int[purchasePrice * purchasePrice];
+            //использованные монеты
+            int[] coinsUsed = new int[purchasePrice * purchasePrice];
+
+            //высчитываем сдачу
+            int change = -1;
+            //смотрим, сколько даст покупатель
+            //предположим, что сдача не потребуется
+            int pay = purchasePrice;
+            GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
+            //набираем монеты покупателя
+            while (coinsUsed[pay] == coinsBuyers[coinsBuyers.Length-1])
+            {
+                pay++;
+                GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
+            }
+
+            //высчитываем сдачу
+            change = pay - purchasePrice;
+
+            coinCount = new int[purchasePrice];
+            coinsUsed = new int[purchasePrice];
+
+            GiveChange(coinsSeller, change, coinCount, coinsUsed);
+            PrintCoins(coinsUsed, change);
         }
     }
 }

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxSumShortChange = new System.Windows.Forms.TextBox();
-            this.lbSumShortChange = new System.Windows.Forms.Label();
+            this.textBoxPurchasePrice = new System.Windows.Forms.TextBox();
+            this.lbPurchasePrice = new System.Windows.Forms.Label();
             this.lbCoinsSeller = new System.Windows.Forms.Label();
             this.lbCoinsBuyers = new System.Windows.Forms.Label();
             this.textBoxCoinsSeller = new System.Windows.Forms.TextBox();
@@ -39,28 +39,29 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.lbShortChange = new System.Windows.Forms.Label();
             this.textBoxShortChange = new System.Windows.Forms.TextBox();
+            this.lbNull = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // textBoxSumShortChange
+            // textBoxPurchasePrice
             // 
-            this.textBoxSumShortChange.Enabled = false;
-            this.textBoxSumShortChange.Location = new System.Drawing.Point(278, 107);
-            this.textBoxSumShortChange.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxSumShortChange.Name = "textBoxSumShortChange";
-            this.textBoxSumShortChange.Size = new System.Drawing.Size(102, 26);
-            this.textBoxSumShortChange.TabIndex = 0;
-            this.textBoxSumShortChange.TextChanged += new System.EventHandler(this.textBoxSumShortChange_TextChanged);
-            this.textBoxSumShortChange.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCoinsSeller_KeyPress);
+            this.textBoxPurchasePrice.Enabled = false;
+            this.textBoxPurchasePrice.Location = new System.Drawing.Point(278, 127);
+            this.textBoxPurchasePrice.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxPurchasePrice.Name = "textBoxPurchasePrice";
+            this.textBoxPurchasePrice.Size = new System.Drawing.Size(175, 26);
+            this.textBoxPurchasePrice.TabIndex = 0;
+            this.textBoxPurchasePrice.TextChanged += new System.EventHandler(this.textBoxSumShortChange_TextChanged);
+            this.textBoxPurchasePrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCoinsSeller_KeyPress);
             // 
-            // lbSumShortChange
+            // lbPurchasePrice
             // 
-            this.lbSumShortChange.AutoSize = true;
-            this.lbSumShortChange.Location = new System.Drawing.Point(148, 107);
-            this.lbSumShortChange.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbSumShortChange.Name = "lbSumShortChange";
-            this.lbSumShortChange.Size = new System.Drawing.Size(124, 20);
-            this.lbSumShortChange.TabIndex = 1;
-            this.lbSumShortChange.Text = "Сумма сдачи:";
+            this.lbPurchasePrice.AutoSize = true;
+            this.lbPurchasePrice.Location = new System.Drawing.Point(90, 127);
+            this.lbPurchasePrice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbPurchasePrice.Name = "lbPurchasePrice";
+            this.lbPurchasePrice.Size = new System.Drawing.Size(178, 20);
+            this.lbPurchasePrice.TabIndex = 1;
+            this.lbPurchasePrice.Text = "Стоимость покупки:";
             // 
             // lbCoinsSeller
             // 
@@ -103,13 +104,14 @@
             // btnGiveShortChange
             // 
             this.btnGiveShortChange.Enabled = false;
-            this.btnGiveShortChange.Location = new System.Drawing.Point(397, 107);
+            this.btnGiveShortChange.Location = new System.Drawing.Point(478, 127);
             this.btnGiveShortChange.Margin = new System.Windows.Forms.Padding(2);
             this.btnGiveShortChange.Name = "btnGiveShortChange";
             this.btnGiveShortChange.Size = new System.Drawing.Size(157, 26);
             this.btnGiveShortChange.TabIndex = 6;
-            this.btnGiveShortChange.Text = "Выдать";
+            this.btnGiveShortChange.Text = "Выдать сдачу";
             this.btnGiveShortChange.UseVisualStyleBackColor = true;
+            this.btnGiveShortChange.Click += new System.EventHandler(this.btnGiveShortChange_Click);
             // 
             // btnFix
             // 
@@ -134,26 +136,36 @@
             // lbShortChange
             // 
             this.lbShortChange.AutoSize = true;
-            this.lbShortChange.Location = new System.Drawing.Point(90, 434);
+            this.lbShortChange.Location = new System.Drawing.Point(90, 490);
             this.lbShortChange.Name = "lbShortChange";
-            this.lbShortChange.Size = new System.Drawing.Size(68, 20);
+            this.lbShortChange.Size = new System.Drawing.Size(63, 20);
             this.lbShortChange.TabIndex = 9;
-            this.lbShortChange.Text = "Сдача:";
+            this.lbShortChange.Text = "Сдача";
             // 
             // textBoxShortChange
             // 
-            this.textBoxShortChange.Location = new System.Drawing.Point(164, 434);
+            this.textBoxShortChange.Location = new System.Drawing.Point(164, 490);
             this.textBoxShortChange.Name = "textBoxShortChange";
             this.textBoxShortChange.ReadOnly = true;
             this.textBoxShortChange.Size = new System.Drawing.Size(471, 26);
             this.textBoxShortChange.TabIndex = 10;
+            // 
+            // lbNull
+            // 
+            this.lbNull.AutoSize = true;
+            this.lbNull.Location = new System.Drawing.Point(90, 89);
+            this.lbNull.Name = "lbNull";
+            this.lbNull.Size = new System.Drawing.Size(549, 20);
+            this.lbNull.TabIndex = 11;
+            this.lbNull.Text = "____________________________________________________________";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(751, 482);
+            this.ClientSize = new System.Drawing.Size(736, 550);
+            this.Controls.Add(this.lbNull);
             this.Controls.Add(this.textBoxShortChange);
             this.Controls.Add(this.lbShortChange);
             this.Controls.Add(this.btnClear);
@@ -163,8 +175,8 @@
             this.Controls.Add(this.textBoxCoinsSeller);
             this.Controls.Add(this.lbCoinsBuyers);
             this.Controls.Add(this.lbCoinsSeller);
-            this.Controls.Add(this.lbSumShortChange);
-            this.Controls.Add(this.textBoxSumShortChange);
+            this.Controls.Add(this.lbPurchasePrice);
+            this.Controls.Add(this.textBoxPurchasePrice);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -178,8 +190,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxSumShortChange;
-        private System.Windows.Forms.Label lbSumShortChange;
+        private System.Windows.Forms.TextBox textBoxPurchasePrice;
+        private System.Windows.Forms.Label lbPurchasePrice;
         private System.Windows.Forms.Label lbCoinsSeller;
         private System.Windows.Forms.Label lbCoinsBuyers;
         private System.Windows.Forms.TextBox textBoxCoinsSeller;
@@ -189,6 +201,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lbShortChange;
         private System.Windows.Forms.TextBox textBoxShortChange;
+        private System.Windows.Forms.Label lbNull;
     }
 }
 
