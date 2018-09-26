@@ -81,6 +81,7 @@ namespace ShortChange
             textBoxCoinsSeller.Clear();
             textBoxPurchasePrice.Clear();
             textBoxShortChange.Clear();
+            textBoxPay.Clear();
 
             //изменяем доступность компонентов
             EnabledComponents(true);
@@ -120,20 +121,23 @@ namespace ShortChange
             return minCoins[change];        
         }
 
-        private void PrintCoins(int[] coinsUsed, int change)
+        private string PrintCoins(int[] coinsUsed, int change)
         {
             int coin = change;
+            string str = "";
             while (coin > 0)
             {
                 int thisCoin = coinsUsed[coin];
-                textBoxShortChange.Text += thisCoin + " ";
+                str += thisCoin + " ";
                 coin = coin - thisCoin;
             }
+            return str;
         }
 
         private void btnGiveShortChange_Click(object sender, EventArgs e)
         {
             textBoxShortChange.Clear();
+            textBoxPay.Clear();
 
             //получаем стоимость покупки
             int purchasePrice = int.Parse(textBoxPurchasePrice.Text);
@@ -150,11 +154,16 @@ namespace ShortChange
             int pay = purchasePrice;
             GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
             //набираем монеты покупателя
-            while (coinsUsed[pay] == coinsBuyers[coinsBuyers.Length-1])
+            while (coinsUsed[0] != 1)
             {
                 pay++;
+                //пробуем дать pay рублей
                 GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
             }
+
+            //печать монет пользователя
+            textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты: "
+                + PrintCoins(coinsUsed, pay);
 
             //высчитываем сдачу
             change = pay - purchasePrice;
@@ -163,7 +172,10 @@ namespace ShortChange
             coinsUsed = new int[purchasePrice];
 
             GiveChange(coinsSeller, change, coinCount, coinsUsed);
-            PrintCoins(coinsUsed, change);
+
+            //печать монет покупателя
+            textBoxShortChange.Text = textBoxShortChange.Text + change.ToString() 
+                + ". Используемые монеты: " + PrintCoins(coinsUsed, change);
         }
     }
 }

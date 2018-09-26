@@ -40,12 +40,15 @@
             this.lbShortChange = new System.Windows.Forms.Label();
             this.textBoxShortChange = new System.Windows.Forms.TextBox();
             this.lbNull = new System.Windows.Forms.Label();
+            this.lbNull2 = new System.Windows.Forms.Label();
+            this.lbBuyers = new System.Windows.Forms.Label();
+            this.textBoxPay = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxPurchasePrice
             // 
             this.textBoxPurchasePrice.Enabled = false;
-            this.textBoxPurchasePrice.Location = new System.Drawing.Point(278, 127);
+            this.textBoxPurchasePrice.Location = new System.Drawing.Point(280, 159);
             this.textBoxPurchasePrice.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPurchasePrice.Name = "textBoxPurchasePrice";
             this.textBoxPurchasePrice.Size = new System.Drawing.Size(175, 26);
@@ -56,7 +59,7 @@
             // lbPurchasePrice
             // 
             this.lbPurchasePrice.AutoSize = true;
-            this.lbPurchasePrice.Location = new System.Drawing.Point(90, 127);
+            this.lbPurchasePrice.Location = new System.Drawing.Point(92, 159);
             this.lbPurchasePrice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbPurchasePrice.Name = "lbPurchasePrice";
             this.lbPurchasePrice.Size = new System.Drawing.Size(178, 20);
@@ -66,7 +69,7 @@
             // lbCoinsSeller
             // 
             this.lbCoinsSeller.AutoSize = true;
-            this.lbCoinsSeller.Location = new System.Drawing.Point(90, 25);
+            this.lbCoinsSeller.Location = new System.Drawing.Point(92, 57);
             this.lbCoinsSeller.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbCoinsSeller.Name = "lbCoinsSeller";
             this.lbCoinsSeller.Size = new System.Drawing.Size(167, 20);
@@ -76,7 +79,7 @@
             // lbCoinsBuyers
             // 
             this.lbCoinsBuyers.AutoSize = true;
-            this.lbCoinsBuyers.Location = new System.Drawing.Point(90, 63);
+            this.lbCoinsBuyers.Location = new System.Drawing.Point(92, 95);
             this.lbCoinsBuyers.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbCoinsBuyers.Name = "lbCoinsBuyers";
             this.lbCoinsBuyers.Size = new System.Drawing.Size(182, 20);
@@ -85,7 +88,7 @@
             // 
             // textBoxCoinsSeller
             // 
-            this.textBoxCoinsSeller.Location = new System.Drawing.Point(278, 22);
+            this.textBoxCoinsSeller.Location = new System.Drawing.Point(280, 54);
             this.textBoxCoinsSeller.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxCoinsSeller.Name = "textBoxCoinsSeller";
             this.textBoxCoinsSeller.Size = new System.Drawing.Size(175, 26);
@@ -94,7 +97,7 @@
             // 
             // textBoxCoinsBuyers
             // 
-            this.textBoxCoinsBuyers.Location = new System.Drawing.Point(278, 61);
+            this.textBoxCoinsBuyers.Location = new System.Drawing.Point(280, 93);
             this.textBoxCoinsBuyers.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxCoinsBuyers.Name = "textBoxCoinsBuyers";
             this.textBoxCoinsBuyers.Size = new System.Drawing.Size(175, 26);
@@ -104,7 +107,7 @@
             // btnGiveShortChange
             // 
             this.btnGiveShortChange.Enabled = false;
-            this.btnGiveShortChange.Location = new System.Drawing.Point(478, 127);
+            this.btnGiveShortChange.Location = new System.Drawing.Point(480, 159);
             this.btnGiveShortChange.Margin = new System.Windows.Forms.Padding(2);
             this.btnGiveShortChange.Name = "btnGiveShortChange";
             this.btnGiveShortChange.Size = new System.Drawing.Size(157, 26);
@@ -115,7 +118,7 @@
             // 
             // btnFix
             // 
-            this.btnFix.Location = new System.Drawing.Point(478, 22);
+            this.btnFix.Location = new System.Drawing.Point(480, 54);
             this.btnFix.Name = "btnFix";
             this.btnFix.Size = new System.Drawing.Size(157, 26);
             this.btnFix.TabIndex = 7;
@@ -125,7 +128,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(478, 61);
+            this.btnClear.Location = new System.Drawing.Point(480, 93);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(157, 26);
             this.btnClear.TabIndex = 8;
@@ -136,35 +139,65 @@
             // lbShortChange
             // 
             this.lbShortChange.AutoSize = true;
-            this.lbShortChange.Location = new System.Drawing.Point(90, 490);
+            this.lbShortChange.Location = new System.Drawing.Point(92, 276);
             this.lbShortChange.Name = "lbShortChange";
-            this.lbShortChange.Size = new System.Drawing.Size(63, 20);
+            this.lbShortChange.Size = new System.Drawing.Size(73, 20);
             this.lbShortChange.TabIndex = 9;
-            this.lbShortChange.Text = "Сдача";
+            this.lbShortChange.Text = "Сдача :";
             // 
             // textBoxShortChange
             // 
-            this.textBoxShortChange.Location = new System.Drawing.Point(164, 490);
+            this.textBoxShortChange.Location = new System.Drawing.Point(192, 273);
             this.textBoxShortChange.Name = "textBoxShortChange";
             this.textBoxShortChange.ReadOnly = true;
-            this.textBoxShortChange.Size = new System.Drawing.Size(471, 26);
+            this.textBoxShortChange.Size = new System.Drawing.Size(445, 26);
             this.textBoxShortChange.TabIndex = 10;
             // 
             // lbNull
             // 
             this.lbNull.AutoSize = true;
-            this.lbNull.Location = new System.Drawing.Point(90, 89);
+            this.lbNull.Location = new System.Drawing.Point(92, 121);
             this.lbNull.Name = "lbNull";
             this.lbNull.Size = new System.Drawing.Size(549, 20);
             this.lbNull.TabIndex = 11;
             this.lbNull.Text = "____________________________________________________________";
+            // 
+            // lbNull2
+            // 
+            this.lbNull2.AutoSize = true;
+            this.lbNull2.Location = new System.Drawing.Point(92, 187);
+            this.lbNull2.Name = "lbNull2";
+            this.lbNull2.Size = new System.Drawing.Size(549, 20);
+            this.lbNull2.TabIndex = 12;
+            this.lbNull2.Text = "____________________________________________________________";
+            // 
+            // lbBuyers
+            // 
+            this.lbBuyers.AutoSize = true;
+            this.lbBuyers.Location = new System.Drawing.Point(92, 229);
+            this.lbBuyers.Name = "lbBuyers";
+            this.lbBuyers.Size = new System.Drawing.Size(151, 20);
+            this.lbBuyers.TabIndex = 13;
+            this.lbBuyers.Text = "Покупатель дал:";
+            // 
+            // textBoxPay
+            // 
+            this.textBoxPay.Location = new System.Drawing.Point(263, 229);
+            this.textBoxPay.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxPay.Name = "textBoxPay";
+            this.textBoxPay.ReadOnly = true;
+            this.textBoxPay.Size = new System.Drawing.Size(374, 26);
+            this.textBoxPay.TabIndex = 14;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(736, 550);
+            this.ClientSize = new System.Drawing.Size(736, 366);
+            this.Controls.Add(this.textBoxPay);
+            this.Controls.Add(this.lbBuyers);
+            this.Controls.Add(this.lbNull2);
             this.Controls.Add(this.lbNull);
             this.Controls.Add(this.textBoxShortChange);
             this.Controls.Add(this.lbShortChange);
@@ -202,6 +235,9 @@
         private System.Windows.Forms.Label lbShortChange;
         private System.Windows.Forms.TextBox textBoxShortChange;
         private System.Windows.Forms.Label lbNull;
+        private System.Windows.Forms.Label lbNull2;
+        private System.Windows.Forms.Label lbBuyers;
+        private System.Windows.Forms.TextBox textBoxPay;
     }
 }
 
