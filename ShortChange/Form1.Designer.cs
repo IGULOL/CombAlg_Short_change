@@ -158,18 +158,18 @@
             this.lbNull.AutoSize = true;
             this.lbNull.Location = new System.Drawing.Point(92, 121);
             this.lbNull.Name = "lbNull";
-            this.lbNull.Size = new System.Drawing.Size(549, 20);
+            this.lbNull.Size = new System.Drawing.Size(612, 20);
             this.lbNull.TabIndex = 11;
-            this.lbNull.Text = "____________________________________________________________";
+            this.lbNull.Text = "___________________________________________________________________";
             // 
             // lbNull2
             // 
             this.lbNull2.AutoSize = true;
             this.lbNull2.Location = new System.Drawing.Point(92, 187);
             this.lbNull2.Name = "lbNull2";
-            this.lbNull2.Size = new System.Drawing.Size(549, 20);
+            this.lbNull2.Size = new System.Drawing.Size(612, 20);
             this.lbNull2.TabIndex = 12;
-            this.lbNull2.Text = "____________________________________________________________";
+            this.lbNull2.Text = "___________________________________________________________________";
             // 
             // lbBuyers
             // 

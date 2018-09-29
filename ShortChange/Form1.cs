@@ -23,6 +23,14 @@ namespace ShortChange
         int[] coinsSeller; //монеты продавца
         int[] coinsBuyers; //монеты покупателя
 
+        //массив, в котором хранится сочетание монет
+        int[] combination;
+
+        //найденная комбинация монеток
+        int[] necessaryCombination;
+
+        //проверка того, что сдача готова
+        bool ok;
 
         public MainForm()
         {
@@ -50,26 +58,34 @@ namespace ShortChange
         //зафиксировать
         private void btnFix_Click(object sender, EventArgs e)
         {
-            //изменяем доступность компонентов
-            EnabledComponents(false);
-
-            try
+            if ((textBoxCoinsSeller.Text == "") || (textBoxCoinsBuyers.Text == ""))
             {
-                //считываем информацию из полей
-                coinsSeller = textBoxCoinsSeller.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
-                Select(x => int.Parse(x)).ToArray();
-                coinsBuyers = textBoxCoinsBuyers.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
-                Select(x => int.Parse(x)).ToArray();
-
-                //сортируем по возрастанию
-                Array.Sort(coinsSeller);
-                Array.Sort(coinsBuyers);
+                MessageBox.Show("Введите монеты.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("Ошибка при вводе чисел.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 //изменяем доступность компонентов
-                EnabledComponents(true);
+                EnabledComponents(false);
+
+                try
+                {
+                    //считываем информацию из полей
+                    coinsSeller = textBoxCoinsSeller.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
+                    Select(x => int.Parse(x)).ToArray();
+                    coinsBuyers = textBoxCoinsBuyers.Text.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).
+                    Select(x => int.Parse(x)).ToArray();
+
+                    //сортируем по возрастанию
+                    Array.Sort(coinsSeller);
+                    Array.Sort(coinsBuyers);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Ошибка при вводе чисел.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //изменяем доступность компонентов
+                    EnabledComponents(true);
+                }
             }
         }
 
@@ -93,47 +109,85 @@ namespace ShortChange
             btnGiveShortChange.Enabled = true;
         }
 
-        /*
-         * 
-         */
-        private int GiveChange(int[] masValue, int change, int[] minCoins, int[] coinsUsed)
+        //сумма монеток в комбинации
+        private int Sum(int[] arr)
         {
-            //рассматриваем все возможные сочетания монет, дающие сумму rubles
-            for (int rubles = 0; rubles <= change; rubles++)
+            int sum = 0;
+            foreach (int item in arr)
             {
-                int coinCount = rubles; //количество монет
-                int newCoin = 1;
-                foreach (int i in masValue)
-                {
-                    if (i <= rubles)
-                    {
-                        if (minCoins[rubles - i] + 1 < coinCount)
-                        {
-                            coinCount = minCoins[rubles - i] + 1;
-                            newCoin = i;
-                        }
-                    }
-                }
-                minCoins[rubles] = coinCount;
-                coinsUsed[rubles] = newCoin;
+                sum += item;
             }
-            //минимальное количество монет
-            return minCoins[change];        
+            return sum;
         }
 
-        private string PrintCoins(int[] coinsUsed, int change)
+        //необходимо разделить сравнение текущей суммы в сочетании для покупателя 
+        //и сравнение текущей суммы в сочетании для продавца
+        delegate bool Compare(int x, int y);
+        Compare myFuncForCompare;
+        private bool CompareForBuyers(int sum, int value) => sum >= value;
+        private bool CompareForSeller(int sum, int value) => sum == value;
+
+        //поиск необходимого сочетания для покупателя
+        private void SearchForTheNecessaryCombinationBuyers(int pos, int k, int maxUsed, int pay)
         {
-            int coin = change;
-            string str = "";
-            while (coin > 0)
+            //если выбрали достаточное количество элементов
+            if (pos == k)
             {
-                int thisCoin = coinsUsed[coin];
-                str += thisCoin + " ";
-                coin = coin - thisCoin;
+                //пока не нашли нужное сочетание 
+                //и сумма элементов в сочетании не больше или не равна нужной
+                if (!ok && myFuncForCompare(Sum(combination), pay))
+                {
+                    necessaryCombination = (from elem in combination select elem).ToArray();
+                    ok = true;
+                }
+            }
+            else
+            {
+                //формирование сочетания с повторениями
+                for (int i = maxUsed; i < coinsBuyers.Length; i++)
+                {
+                    combination[pos] = coinsBuyers[i];
+                    SearchForTheNecessaryCombinationBuyers(pos + 1, k, i, pay);
+                }
+            }
+        }
+
+        //поиск необходимого сочетания для продавца
+        private void SearchForTheNecessaryCombinationSeller(int pos, int k, int maxUsed, int change)
+        {
+            //если выбрали достаточное количество элементов
+            if (pos == k)
+            {
+                //пока не нашли нужное сочетание и сумма элементов в сочетании не равна нужной
+                if (!ok && myFuncForCompare(Sum(combination),change))
+                {
+                    necessaryCombination = (from elem in combination select elem).ToArray();
+                    ok = true;
+                }
+            }
+            else
+            {
+                //формирование сочетания с повторениями
+                for (int i = maxUsed; i < coinsSeller.Length; i++)
+                {
+                    combination[pos] = coinsSeller[i];
+                    SearchForTheNecessaryCombinationSeller(pos + 1, k, i, change);
+                }
+            }
+        }
+
+        //преобразование массива в строку
+        private string ArrayToString(int[] arr)
+        {
+            string str = "";
+            foreach (int item in arr)
+            {
+                str = str + item.ToString() + " ";
             }
             return str;
         }
 
+        //выдать сдачу
         private void btnGiveShortChange_Click(object sender, EventArgs e)
         {
             textBoxShortChange.Clear();
@@ -142,40 +196,66 @@ namespace ShortChange
             //получаем стоимость покупки
             int purchasePrice = int.Parse(textBoxPurchasePrice.Text);
 
-            //список из минимальных количеств монет, необходимых для выдачи каждого значения
-            int[] coinCount = new int[purchasePrice * purchasePrice];
-            //использованные монеты
-            int[] coinsUsed = new int[purchasePrice * purchasePrice];
-
-            //высчитываем сдачу
-            int change = -1;
-            //смотрим, сколько даст покупатель
-            //предположим, что сдача не потребуется
+            //считаем, сколько дает покупатель
+            //предположим, что он может дать без сдачи
             int pay = purchasePrice;
-            GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
-            //набираем монеты покупателя
-            while (coinsUsed[0] != 1)
+
+            int i = 1;
+
+            ok = false;
+            myFuncForCompare = CompareForBuyers;
+
+            //для начала проверим все сочетания из одного элемента
+            while (!ok && (i != 100))
             {
-                pay++;
-                //пробуем дать pay рублей
-                GiveChange(coinsBuyers, pay, coinCount, coinsUsed);
+                combination = new int[i];
+                SearchForTheNecessaryCombinationBuyers(0, i, 0, pay);
+                if (!ok)
+                    pay++;
+                i++;
+            }           
+            //если не нашли комбинацию
+            if (i == 100)
+            {
+                textBoxPay.Text = textBoxPay.Text + "С такими монетами далеко не уйдешь.";
+            }
+            else
+            {
+                textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты: "
+                    + ArrayToString(necessaryCombination);
             }
 
-            //печать монет пользователя
-            textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты: "
-                + PrintCoins(coinsUsed, pay);
-
             //высчитываем сдачу
-            change = pay - purchasePrice;
+            int change = pay - purchasePrice;
+            if (change == 0)
+            {
+                textBoxShortChange.Text = "0.";
+            }
+            else
+            {
+                i = 1;
+                ok = false;
+                myFuncForCompare = CompareForSeller;
 
-            coinCount = new int[purchasePrice];
-            coinsUsed = new int[purchasePrice];
-
-            GiveChange(coinsSeller, change, coinCount, coinsUsed);
-
-            //печать монет покупателя
-            textBoxShortChange.Text = textBoxShortChange.Text + change.ToString() 
-                + ". Используемые монеты: " + PrintCoins(coinsUsed, change);
+                //для начала проверим все сочетания из одного элемента
+                while (!ok && (i != 50))
+                {
+                    combination = new int[i];
+                    SearchForTheNecessaryCombinationSeller(0, i, 0, change);
+                    i++;
+                }
+                //если не нашли комбинацию
+                if (i == 50)
+                {
+                    textBoxShortChange.Text = textBoxShortChange.Text 
+                        + "С такими монетами далеко не уйдешь.";
+                }
+                else
+                {
+                    textBoxShortChange.Text = textBoxShortChange.Text + change.ToString()
+                    + ". Используемые монеты: " + ArrayToString(necessaryCombination);
+                }
+            }
         }
     }
 }
