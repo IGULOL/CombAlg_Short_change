@@ -52,7 +52,7 @@
             this.textBoxPurchasePrice.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPurchasePrice.Name = "textBoxPurchasePrice";
             this.textBoxPurchasePrice.Size = new System.Drawing.Size(175, 26);
-            this.textBoxPurchasePrice.TabIndex = 0;
+            this.textBoxPurchasePrice.TabIndex = 3;
             this.textBoxPurchasePrice.TextChanged += new System.EventHandler(this.textBoxSumShortChange_TextChanged);
             this.textBoxPurchasePrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCoinsSeller_KeyPress);
             // 
@@ -92,7 +92,7 @@
             this.textBoxCoinsSeller.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxCoinsSeller.Name = "textBoxCoinsSeller";
             this.textBoxCoinsSeller.Size = new System.Drawing.Size(175, 26);
-            this.textBoxCoinsSeller.TabIndex = 4;
+            this.textBoxCoinsSeller.TabIndex = 0;
             this.textBoxCoinsSeller.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCoinsSeller_KeyPress);
             // 
             // textBoxCoinsBuyers
@@ -101,7 +101,7 @@
             this.textBoxCoinsBuyers.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxCoinsBuyers.Name = "textBoxCoinsBuyers";
             this.textBoxCoinsBuyers.Size = new System.Drawing.Size(175, 26);
-            this.textBoxCoinsBuyers.TabIndex = 5;
+            this.textBoxCoinsBuyers.TabIndex = 1;
             this.textBoxCoinsBuyers.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCoinsSeller_KeyPress);
             // 
             // btnGiveShortChange
@@ -111,7 +111,7 @@
             this.btnGiveShortChange.Margin = new System.Windows.Forms.Padding(2);
             this.btnGiveShortChange.Name = "btnGiveShortChange";
             this.btnGiveShortChange.Size = new System.Drawing.Size(157, 26);
-            this.btnGiveShortChange.TabIndex = 6;
+            this.btnGiveShortChange.TabIndex = 4;
             this.btnGiveShortChange.Text = "Выдать сдачу";
             this.btnGiveShortChange.UseVisualStyleBackColor = true;
             this.btnGiveShortChange.Click += new System.EventHandler(this.btnGiveShortChange_Click);
@@ -121,7 +121,7 @@
             this.btnFix.Location = new System.Drawing.Point(480, 54);
             this.btnFix.Name = "btnFix";
             this.btnFix.Size = new System.Drawing.Size(157, 26);
-            this.btnFix.TabIndex = 7;
+            this.btnFix.TabIndex = 2;
             this.btnFix.Text = "Зафиксировать";
             this.btnFix.UseVisualStyleBackColor = true;
             this.btnFix.Click += new System.EventHandler(this.btnFix_Click);
@@ -131,7 +131,7 @@
             this.btnClear.Location = new System.Drawing.Point(480, 93);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(157, 26);
-            this.btnClear.TabIndex = 8;
+            this.btnClear.TabIndex = 5;
             this.btnClear.Text = "Очистить";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -151,7 +151,7 @@
             this.textBoxShortChange.Name = "textBoxShortChange";
             this.textBoxShortChange.ReadOnly = true;
             this.textBoxShortChange.Size = new System.Drawing.Size(445, 26);
-            this.textBoxShortChange.TabIndex = 10;
+            this.textBoxShortChange.TabIndex = 7;
             // 
             // lbNull
             // 
@@ -187,14 +187,14 @@
             this.textBoxPay.Name = "textBoxPay";
             this.textBoxPay.ReadOnly = true;
             this.textBoxPay.Size = new System.Drawing.Size(374, 26);
-            this.textBoxPay.TabIndex = 14;
+            this.textBoxPay.TabIndex = 6;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(736, 366);
+            this.ClientSize = new System.Drawing.Size(736, 362);
             this.Controls.Add(this.textBoxPay);
             this.Controls.Add(this.lbBuyers);
             this.Controls.Add(this.lbNull2);

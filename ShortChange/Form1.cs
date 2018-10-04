@@ -120,22 +120,23 @@ namespace ShortChange
             return sum;
         }
 
-        //необходимо разделить сравнение текущей суммы в сочетании для покупателя 
-        //и сравнение текущей суммы в сочетании для продавца
+        //необходимо разделить в сочетании сравнение текущей суммы без сдачи
+        //и сравнение текущей суммы со сдачей
         delegate bool Compare(int x, int y);
         Compare myFuncForCompare;
-        private bool CompareForBuyers(int sum, int value) => sum >= value;
-        private bool CompareForSeller(int sum, int value) => sum == value;
+        private bool CompareForBuyerWithChange(int sum, int value) => sum >= value;
+        private bool CompareForBuyerWithoutChange(int sum, int value) => sum == value;
+        
 
         //поиск необходимого сочетания для покупателя
-        private void SearchForTheNecessaryCombinationBuyers(int pos, int k, int maxUsed, int pay)
+        private void SearchForTheNecessaryCombinationBuyers(int pos, int k, int maxUsed, int price)
         {
             //если выбрали достаточное количество элементов
             if (pos == k)
             {
                 //пока не нашли нужное сочетание 
                 //и сумма элементов в сочетании не больше или не равна нужной
-                if (!ok && myFuncForCompare(Sum(combination), pay))
+                if (!ok && myFuncForCompare(Sum(combination), price))
                 {
                     necessaryCombination = (from elem in combination select elem).ToArray();
                     ok = true;
@@ -147,7 +148,7 @@ namespace ShortChange
                 for (int i = maxUsed; i < coinsBuyers.Length; i++)
                 {
                     combination[pos] = coinsBuyers[i];
-                    SearchForTheNecessaryCombinationBuyers(pos + 1, k, i, pay);
+                    SearchForTheNecessaryCombinationBuyers(pos + 1, k, i, price);
                 }
             }
         }
@@ -159,7 +160,7 @@ namespace ShortChange
             if (pos == k)
             {
                 //пока не нашли нужное сочетание и сумма элементов в сочетании не равна нужной
-                if (!ok && myFuncForCompare(Sum(combination),change))
+                if (!ok && (Sum(combination) == change))
                 {
                     necessaryCombination = (from elem in combination select elem).ToArray();
                     ok = true;
@@ -176,13 +177,32 @@ namespace ShortChange
             }
         }
 
-        //преобразование массива в строку
-        private string ArrayToString(int[] arr)
+        //количество elem в arr
+        private int CountElem<T>(T[] arr, T elem)
+        {
+            int count = 0;
+            foreach (T item in arr)
+            {
+                if (item.Equals(elem))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        //преобразование массива монеток в строку
+        private string ArrayCoinsToString(int[] arr, int[] coins)
         {
             string str = "";
-            foreach (int item in arr)
+            int count = 0;
+            foreach (int item in coins)
             {
-                str = str + item.ToString() + " ";
+                count = CountElem<int>(arr, item);
+                if (count != 0)
+                {
+                    str = str + item.ToString() + " - " + count.ToString() + "шт.  ";
+                }
             }
             return str;
         }
@@ -197,36 +217,63 @@ namespace ShortChange
             int purchasePrice = int.Parse(textBoxPurchasePrice.Text);
 
             //считаем, сколько дает покупатель
-            //предположим, что он может дать без сдачи
+            //предположим, что он может дать заданную сумму без сдачи
             int pay = purchasePrice;
 
+            //будем проверять все сочетания из заданного количества элементов
+            //начиная с размера = 1
             int i = 1;
 
-            ok = false;
-            myFuncForCompare = CompareForBuyers;
+            //переменная, которая хранит окончательный размер сочетания
+            //при котором возможно найдется нужное
+            int stop = 0;
 
-            //для начала проверим все сочетания из одного элемента
-            while (!ok && (i != 100))
+            ok = false;
+            myFuncForCompare = CompareForBuyerWithoutChange;
+
+            //будем считать, что это худший вариант: 
+            //сочетание, состоящее только из наименьшей монеты           
+            stop = pay / coinsBuyers[0] + 1;
+            
+            //проверяем, может ли покупатель выдать деньги без сдачи
+            while (!ok && (i <= stop))
             {
                 combination = new int[i];
                 SearchForTheNecessaryCombinationBuyers(0, i, 0, pay);
                 if (!ok)
-                    pay++;
-                i++;
-            }           
-            //если не нашли комбинацию
-            if (i == 100)
+                {
+                    i++;
+                }
+            }
+            //если можем дать без сдачи
+            if (i <= stop)
             {
-                textBoxPay.Text = textBoxPay.Text + "С такими монетами далеко не уйдешь.";
+                textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты:  "
+                    + ArrayCoinsToString(necessaryCombination, coinsBuyers);
             }
             else
             {
-                textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты: "
-                    + ArrayToString(necessaryCombination);
+                i = 1;
+                ok = false;
+
+                myFuncForCompare = CompareForBuyerWithChange;
+
+                //теперь ищем сочетание монет, больших чем заданная стоимость
+                while (!ok && (i != stop))
+                {
+                    combination = new int[i];
+                    SearchForTheNecessaryCombinationBuyers(0, i, 0, pay);
+                    i++;
+                }
+
+                pay = necessaryCombination.Sum();
+                textBoxPay.Text = textBoxPay.Text + pay.ToString() + ". Используемые монеты:  "
+                    + ArrayCoinsToString(necessaryCombination, coinsBuyers);
             }
 
             //высчитываем сдачу
             int change = pay - purchasePrice;
+            //если сдачи нет
             if (change == 0)
             {
                 textBoxShortChange.Text = "0.";
@@ -235,25 +282,34 @@ namespace ShortChange
             {
                 i = 1;
                 ok = false;
-                myFuncForCompare = CompareForSeller;
 
-                //для начала проверим все сочетания из одного элемента
-                while (!ok && (i != 50))
+                myFuncForCompare = CompareForBuyerWithoutChange;
+
+                //такой же худший вариант
+                //только для продавца
+                stop = pay / coinsSeller[0] + 1;
+
+                while (!ok && (i <= stop))
                 {
                     combination = new int[i];
                     SearchForTheNecessaryCombinationSeller(0, i, 0, change);
-                    i++;
+                    if (!ok)
+                    {
+                        i++;
+                    }
                 }
+
                 //если не нашли комбинацию
-                if (i == 50)
+                if (i <= stop)
                 {
                     textBoxShortChange.Text = textBoxShortChange.Text 
                         + "С такими монетами далеко не уйдешь.";
                 }
                 else
                 {
-                    textBoxShortChange.Text = textBoxShortChange.Text + change.ToString()
-                    + ". Используемые монеты: " + ArrayToString(necessaryCombination);
+                    textBoxShortChange.Text = textBoxShortChange.Text 
+                        + change.ToString() + ". Используемые монеты:  " 
+                            + ArrayCoinsToString(necessaryCombination, coinsSeller);
                 }
             }
         }
