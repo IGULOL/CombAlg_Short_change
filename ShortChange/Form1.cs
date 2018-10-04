@@ -259,7 +259,7 @@ namespace ShortChange
                 myFuncForCompare = CompareForBuyerWithChange;
 
                 //теперь ищем сочетание монет, больших чем заданная стоимость
-                while (!ok && (i != stop))
+                while (!ok && (i <= stop))
                 {
                     combination = new int[i];
                     SearchForTheNecessaryCombinationBuyers(0, i, 0, pay);
@@ -287,7 +287,7 @@ namespace ShortChange
 
                 //такой же худший вариант
                 //только для продавца
-                stop = pay / coinsSeller[0] + 1;
+                stop = change / coinsSeller[0] + 1;
 
                 while (!ok && (i <= stop))
                 {
@@ -300,7 +300,7 @@ namespace ShortChange
                 }
 
                 //если не нашли комбинацию
-                if (i <= stop)
+                if (i > stop)
                 {
                     textBoxShortChange.Text = textBoxShortChange.Text 
                         + "С такими монетами далеко не уйдешь.";
